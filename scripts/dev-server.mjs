@@ -66,7 +66,9 @@ const server = http.createServer(async (incoming, outgoing) => {
   incoming.once('aborted', () => abort.abort());
   outgoing.once('close', () => { if (!outgoing.writableEnded) abort.abort(); });
   try {
-    const url = new URL(incoming.url || '/', 'http://' + incoming.headers.host);
+    // Render terminates HTTPS at its proxy; preserve the public request origin.
+    const protocol = process.env.RENDER === 'true' && String(incoming.headers['x-forwarded-proto'] || '').split(',')[0].trim() === 'https' ? 'https:' : 'http:';
+    const url = new URL(incoming.url || '/', protocol + '//' + incoming.headers.host);
     if (!url.pathname.startsWith('/api/')) { await serveStatic(incoming, outgoing, url); return; }
     const request = new Request(url, {
       method: incoming.method,
