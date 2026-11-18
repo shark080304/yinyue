@@ -1,0 +1,28 @@
+.cloud-field { display: grid; gap: 7px; color: #70486c; font-size: 12px; min-width: 0; }
+#sheet,#sheet * { box-sizing: border-box; }
+#sheet [hidden] { display: none !important; }
+#sheet .cloud-field :is(input,select) { width: 100%; min-width: 0; min-height: 40px; padding: 9px 11px; border: 1px solid #bd95bf70; border-radius: 9px; background: #fff9fe; color: #63375f; }
+.cloud-connection { border: 1px solid #bd95bf70; border-radius: 11px; padding: 11px; background: #fff6fce0; }
+.cloud-connection summary { color: #71385e; font-size: 12px; font-weight: 700; cursor: pointer; }
+.cloud-connection[open] summary { margin-bottom: 12px; }
+.cloud-connection small { display: block; line-height: 1.65; color: #80627e; margin: 8px 0; }
+#sheet .connection-status { font-size: 12px; padding-left: 12px; position: relative; }
+.connection-status::before { content: ''; position: absolute; width: 6px; height: 6px; border-radius: 50%; background: #c48958; top: .6em; left: 0; }
+.connection-status[data-connected="true"]::before { background: #4b9b7e; }
+.recognition-controls { margin-top: 16px; }
+.recognized-cover { width: 110px; height: 110px; object-fit: cover; border-radius: 15px; box-shadow: 0 7px 24px #8b578733; }
+.recognition-result h3 { color: #542342; font-size: 20px; }
+.recognition-result small { color: #795576; }
+.recognition-result .hub-buttons { justify-content: center; }
+.cloud-composer { margin-top: 15px; }
+.cloud-lyrics-label,.composer-connection { grid-column: 1 / -1; }
+.cloud-composer .generated-lyrics { min-height: 135px; margin-top: 6px; }
+.cloud-composer .composer-connection .hub-external { font-size: 11px; padding: 6px 9px; }
+.generation-stages { display: flex; gap: 8px; margin: 20px 0 10px; }
+.generation-stages[hidden] { display: none; }
+.generation-stages span { flex: 1; text-align: center; font-size: 11px; padding: 9px 3px; border: 1px solid #d0b3d0; border-radius: 9px; color: #8b7190; background: #f9edf6; }
+.generation-stages[data-step="1"] span:first-child,.generation-stages[data-step="2"] span:nth-child(-n+2),.generation-stages[data-step="3"] span { background: #edd0e5; border-color: #bf82ac; color: #6d2c58; }
+.composer-state[data-elapsed]::after { content: ' · 已等待 ' attr(data-elapsed) ' 秒'; color: #9a6b8b; font-size: 11px; }
+.composer-output:empty { display: none; }
+.composer-output { background: #f8ebf6; padding: 14px; border-radius: 12px; margin-top: 15px; }
+@media(max-width:720px) { #sheet[data-kind="composer"] { max-height: calc(100dvh - 24px); } .generation-stages { gap: 5px; } .generation-stages span { font-size: 10px; } }

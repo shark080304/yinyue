@@ -1,0 +1,17 @@
+services:
+  - type: web
+    name: sunny-music
+    runtime: node
+    plan: free
+    region: singapore
+    branch: main
+    buildCommand: node scripts/build-frontend.mjs
+    startCommand: node scripts/dev-server.mjs
+    healthCheckPath: /api/ai/status
+    envVars:
+      - key: NODE_VERSION
+        value: 24.22.1
+      - key: NODE_ENV
+        value: production
+      - key: HOST
+        value: 0.0.0.0

@@ -1,0 +1,10 @@
+import { readFile, writeFile } from 'node:fs/promises';
+const root = new URL('../', import.meta.url);
+const read = name => readFile(new URL('source/' + name, root), 'utf8');
+const styles = ['site.css', 'stage.css', 'edition.css', 'bright.css', 'home-modules.css', 'cloud-music.css', 'hot-modules.css', 'swipe.css', 'motion.css'];
+const scripts = ['audio-match.js', 'cloud-music.js', 'motion.js', 'swipe.js', 'live-date.js', 'home-modules.js', 'hot-modules.js', 'site.js'];
+const [template, base, css, js, media] = await Promise.all([read('index.template.html'), read('base.css'), Promise.all(styles.map(read)), Promise.all(scripts.map(read)), read('media-catalog.json')]);
+const page = template.replace('{{CSS}}', () => base + css.join('\n  ') + '\n  ').replace('{{JS}}', () => '\n  ' + js.join('\n  ') + '\n  ').replace('{{MEDIA}}', () => media);
+if (page.includes('{{CSS}}') || page.includes('{{JS}}') || page.includes('{{MEDIA}}')) throw new Error('Unreplaced source token');
+await writeFile(new URL('public/index.html', root), page);
+console.log('Built public/index.html from editable sources.');

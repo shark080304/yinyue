@@ -1,0 +1,14 @@
+#app .swipe-ready { touch-action: pan-y pinch-zoom; cursor: grab; user-select: none; -webkit-user-select: none; }
+#app .swipe-ready :is(img,.image-cover,.portrait-choice,.album,.mood-item) { cursor: grab; -webkit-user-drag: none; }
+#app .swipe-ready.swipe-dragging,#app .swipe-dragging * { cursor: grabbing !important; }
+#app .artist-stage .stage-images { transition: translate .25s ease-out, transform .25s ease-out; }
+#app .artist-stage.swipe-dragging .stage-images { translate: var(--swipe-shift,0px) 0; transform: scale(1.075); transition: none; }
+#app .pager-viewport.swipe-dragging > :not([hidden]) { translate: var(--swipe-shift,0px) 0; transition: none; }
+.stage-swipe-hint { position: absolute; top: 17px; left: 19px; display: inline-flex; gap: 6px; align-items: center; padding: 6px 10px; border: 1px solid #fff1fc4a; border-radius: 999px; background: #301c4b78; color: #fff0fb; font-size: 11px; pointer-events: none; backdrop-filter: blur(8px); }
+.stage-swipe-hint .material-icons { font-size: 17px; }
+@media(max-width:720px) { .stage-swipe-hint { top: 12px; left: 12px; padding: 5px 8px; font-size: 10px; } }
+@media(prefers-reduced-motion:reduce) {
+  #app .artist-stage .stage-images { transition: none; }
+  #app .artist-stage.swipe-dragging .stage-images { translate: none; transform: none; }
+  #app .pager-viewport.swipe-dragging > :not([hidden]) { translate: none; }
+}
