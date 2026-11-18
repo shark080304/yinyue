@@ -1,0 +1,44 @@
+name: Import Sunny Music source
+on:
+  push:
+    branches: [main]
+    paths: [sunny-music-render.zip]
+permissions:
+  contents: read
+jobs:
+  import:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v7
+      - name: Extract complete source into repository root
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import zipfile
+          root = Path.cwd().resolve()
+          archive = root / 'sunny-music-render.zip'
+          prefix = 'sunny-music-source-v9/'
+          with zipfile.ZipFile(archive) as bundle:
+              for entry in bundle.infolist():
+                  if entry.is_dir():
+                      continue
+                  if not entry.filename.startswith(prefix):
+                      raise ValueError('Unexpected archive root')
+                  relative = Path(entry.filename[len(prefix):])
+                  destination = (root / relative).resolve()
+                  if not destination.is_relative_to(root) or relative.parts[0] in ('.git', '.github', 'data'):
+                      raise ValueError('Unsafe archive path')
+                  destination.parent.mkdir(parents=True, exist_ok=True)
+                  destination.write_bytes(bundle.read(entry))
+          archive.unlink()
+          PY
+      - name: Commit imported source
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add --all
+          git commit -m "Import Sunny Music v9 source and Render configuration"
+          git push origin HEAD:main
